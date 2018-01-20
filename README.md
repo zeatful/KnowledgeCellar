@@ -2,8 +2,7 @@
 
 ## Installation
 1. Clone the repository:
-  <pre>git clone https://github.com/zeatful/KnowledgeCellar.git
-  </pre>
+  <pre>git clone https://github.com/zeatful/KnowledgeCellar.git</pre>
 
 2. Install node modules
   <pre>npm install</pre>
