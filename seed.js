@@ -6,6 +6,8 @@
 'use strict';
 const Header = require('./model/Header');
 
+console.log('Seeding database...');
+
 Header.find({}).removeAsync()
   .then(() => {
     Header.create({
@@ -18,3 +20,5 @@ Header.find({}).removeAsync()
       text: 'Header 4'
     })
   });
+
+console.log('Database seeded!');
