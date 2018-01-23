@@ -33,6 +33,7 @@ var HeaderController = require('./controllers/HeaderController');
 app.use('/api', HeaderController);
 // END CONTROLLER DEFINITIONS
 
+// logic for rendering react from backend server with webpack middleware
 if (isDeveloping) {
   console.log('Setting up webpack middleware...');
   const compiler = webpack(webpackConfig);

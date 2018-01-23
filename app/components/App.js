@@ -8,37 +8,37 @@ import _ from 'lodash'
 import {withTheme, withStyles} from 'material-ui/styles'
 import {AppBar, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, IconButton, MenuIcon, Hidden} from 'material-ui'
 
-import {fetchHeaders} from '../actions'
+import {fetchHeaders, addHeader} from '../actions'
 
+// Custom styling for permanent, responsive drawer
 const drawerWidth = 150;
-
 const styles = theme => ({
   root: {
     width: '100%',
     height: 430,
     zIndex: 1,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   appFrame: {
     position: 'relative',
     display: 'flex',
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   appBar: {
     position: 'absolute',
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: `calc(100% - ${drawerWidth}px)`
   },
   'appBar-left': {
-    marginLeft: drawerWidth,
+    marginLeft: drawerWidth
   },
   'appBar-right': {
-    marginRight: drawerWidth,
+    marginRight: drawerWidth
   },
   drawerPaper: {
     position: 'relative',
     height: '100%',
-    width: drawerWidth,
+    width: drawerWidth
   },
   drawerHeader: theme.mixins.toolbar,
   content: {
@@ -49,10 +49,11 @@ const styles = theme => ({
     marginTop: 56,
     [theme.breakpoints.up('sm')]: {
       height: 'calc(100% - 64px)',
-      marginTop: 64,
-    },
-  },
+      marginTop: 64
+    }
+  }
 });
+
 
 class App extends Component {
   state = {
@@ -65,6 +66,12 @@ class App extends Component {
 
   componentWillMount() {
     this.props.fetchHeaders()
+  }
+
+  addHeader = name => event => {
+    if(event.keyCode == 13){
+      this.props.addHeader(event.target.value)
+    }
   }
 
   renderHeaders() {
@@ -90,7 +97,13 @@ class App extends Component {
         <div/>
         <h4>Navigation Links</h4>
         <Divider />
-        <List>{this.renderHeaders()}</List>      
+        <List>{this.renderHeaders()}</List>
+        <TextField 
+          id='headerTitle' 
+          label='Add Header'
+          className={classes.TextField}
+          value={this.state.headerTitle}
+          onKeyDown={this.addHeader(this.keyPress,'headerTitle')}/>    
       </Drawer>
     );
 
@@ -124,18 +137,22 @@ class App extends Component {
   }
 }
 
+// must add state for reducers here
 function mapStateToProps(state) {
-  return {headers: state.headers}
+  return {
+    headers: state.headers
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchHeaders: fetchHeaders
+    fetchHeaders,
+    addHeader
   }, dispatch)
 }
 
 export default compose(
-  withTheme(),
-  withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  withTheme(), // middleware to supply theme
+  withStyles(styles), // middleware to render with jss
+  connect(mapStateToProps, mapDispatchToProps) // map props and actions
 )(App);

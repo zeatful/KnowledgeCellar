@@ -6,15 +6,15 @@ const ROOT_URL = 'http://localhost:3000/api/headers'
 export const fetchHeaders = () => {
   return dispatch => {
     axios.get(ROOT_URL).then(res => {
-      dispatch(getHeaders(res.data));
+      dispatch(getHeaders(res.data))
     })
   }
 }
 
-export const addHeader = (header, callback) => {
+export const addHeader = headerText => {
   return dispatch => {
-    axios.post(ROOT_URL, header).then((res) => {
-      dispatch(createheader(res.data, callback))
+    axios.post(ROOT_URL, {text: headerText}).then(res => {
+      dispatch(createHeader(res.data))
     })
   }
 }
@@ -26,14 +26,10 @@ export const deleteHeader = (id, callback) => {
   }
 }
 
-const getHeaders = (headers) => {
-  return {
-    type: FETCH_HEADERS,
-    headers
-  }
+const getHeaders = headers => {
+  return {type: FETCH_HEADERS, headers}
 }
 
-const createHeader = (header, callback) => {
-  callback()
-  return {type: CREATE_HEADER, header}
+const createHeader = newHeaderObject => {
+  return {type: CREATE_HEADER, newHeader: newHeaderObject}
 }

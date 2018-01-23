@@ -15,6 +15,7 @@ import reducers from './reducers/index';
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
+// setup a theme to pass down to other components
 const theme = createMuiTheme({
   palette: {
     primary: {
