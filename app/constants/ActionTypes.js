@@ -1,1 +1,3 @@
 export const FETCH_HEADERS = 'FETCH_HEADERS';
+export const CREATE_HEADER = 'CREATE_HEADER';
+export const DELETE_HEADER = 'DELETE_HEADER';
