@@ -6,7 +6,8 @@ import {bindActionCreators, compose} from 'redux'
 import _ from 'lodash'
 
 import {withTheme, withStyles} from 'material-ui/styles'
-import {AppBar, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, IconButton, MenuIcon, Hidden} from 'material-ui'
+import {AppBar, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
+import DeleteIcon from 'material-ui-icons/Delete';
 
 import {fetchHeaders, addHeader} from '../actions'
 
@@ -75,9 +76,10 @@ class App extends Component {
   }
 
   renderHeaders() {
+    const { classes } = this.props;
     const navlinks = ['Home', ...this.props.headers];
     return navlinks.map(header => {
-      return <li key={header._id}><a href={header.text}>{header.text}</a></li>
+      return <li key={header._id} ><a href={header.text}>{header.text} </a></li>
     })
   }
 
@@ -147,7 +149,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchHeaders,
-    addHeader
+    addHeader    
   }, dispatch)
 }
 

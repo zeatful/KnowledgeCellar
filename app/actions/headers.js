@@ -19,9 +19,9 @@ export const addHeader = headerText => {
   }
 }
 
-export const deleteHeader = (id, callback) => {
+export const deleteHeader = (id) => {
   return dispatch => {
-    axios.delete(`${ROOT_ROOT}/${id}`).then(() => callback())
+    axios.delete(`${ROOT_ROOT}/${id}`);
     return {type: DELETE_HEADER, payload: id}
   }
 }
