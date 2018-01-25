@@ -26,10 +26,10 @@ export const deleteHeader = (id, callback) => {
   }
 }
 
-const getHeaders = headers => {
-  return {type: FETCH_HEADERS, headers}
+const getHeaders = payload => {
+  return {type: FETCH_HEADERS, payload}
 }
 
-const createHeader = newHeaderObject => {
-  return {type: CREATE_HEADER, newHeader: newHeaderObject}
+const createHeader = payload => {
+  return {type: CREATE_HEADER, payload}
 }

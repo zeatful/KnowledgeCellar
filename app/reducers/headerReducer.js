@@ -1,20 +1,12 @@
 import { FETCH_HEADERS, CREATE_HEADER } from '../constants/ActionTypes';
 import _ from 'lodash';
 
-const initialState = {
-  headers: []
-}
-
-export default function (state = initialState, action) {
+export default function (state = [], action) {
   switch (action.type) {
     case FETCH_HEADERS:
-      return action.headers;
+      return action.payload
     case CREATE_HEADER:
-    console.log(action.newHeader);
-      return {
-        ...state,
-        headers: [...state.headers, action.newHeader]
-      }
+      return [...state, action.payload ];
     default:
       return state;
   }
