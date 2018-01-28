@@ -6,6 +6,7 @@ const ROOT_URL = 'http://localhost:3000/api/headers'
 export const fetchHeaders = () => {
   return dispatch => {
     axios.get(ROOT_URL).then(res => {
+      // dispatch triggers a state change
       dispatch(getHeaders(res.data))
     })
   }
@@ -14,6 +15,7 @@ export const fetchHeaders = () => {
 export const addHeader = headerText => {
   return dispatch => {
     axios.post(ROOT_URL, {text: headerText}).then(res => {
+      // dispatch triggers a state change
       dispatch(createHeader(res.data))
     })
   }
@@ -22,6 +24,7 @@ export const addHeader = headerText => {
 export const deleteHeader = (id) => {
   return dispatch => {
     axios.delete(`${ROOT_URL}/${id}`).then(res => {
+      // dispatch triggers a state change
       dispatch(removeHeader(id))
     })
   }

@@ -8,6 +8,7 @@ export default function (state = [], action) {
     case CREATE_HEADER:
       return [...state, action.payload];
     case DELETE_HEADER:
+      // filter returns a new array and does not mutate state
       return state.filter(h => h._id !== action.payload)
     default:
       return state;
