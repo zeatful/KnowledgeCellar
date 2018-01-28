@@ -6,10 +6,10 @@ import {bindActionCreators, compose} from 'redux'
 import _ from 'lodash'
 
 import {withTheme, withStyles} from 'material-ui/styles'
-import {AppBar, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
+import {AppBar, Button, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
 import DeleteIcon from 'material-ui-icons/Delete';
 
-import {fetchHeaders, addHeader} from '../actions'
+import {fetchHeaders, addHeader, deleteHeader} from '../actions'
 
 // Custom styling for permanent, responsive drawer
 const drawerWidth = 150;
@@ -75,11 +75,15 @@ class App extends Component {
     }
   }
 
+  deleteHeader =  id => {
+    this.props.deleteHeader(id);
+  }
+
   renderHeaders() {
     const { classes } = this.props;
     const navlinks = ['Home', ...this.props.headers];
     return navlinks.map(header => {
-      return <li key={header._id} ><a href={header.text}>{header.text} </a></li>
+      return <li key={header._id}><a href={header.text}>{header.text}</a><DeleteIcon onClick={() => this.deleteHeader(header._id)}/></li>
     })
   }
 
@@ -149,7 +153,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchHeaders,
-    addHeader    
+    addHeader,
+    deleteHeader    
   }, dispatch)
 }
 

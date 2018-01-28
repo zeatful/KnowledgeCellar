@@ -24,4 +24,10 @@ router.post('/headers', function(req, res) {
   });
 });
 
+router.delete('/headers/:id', function(req, res) {
+  Header.find({ _id: req.params.id}).removeAsync().then(() =>{
+    return res.status(204).end();
+  });
+});
+
 module.exports = router;

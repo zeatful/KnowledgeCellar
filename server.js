@@ -8,6 +8,8 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config.js');
 const mongoose = require('mongoose');
 
+mongoose.Promise = require('bluebird');
+
 const config = require('./config');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const ip = 'localhost';

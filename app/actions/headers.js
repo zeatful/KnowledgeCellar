@@ -21,15 +21,20 @@ export const addHeader = headerText => {
 
 export const deleteHeader = (id) => {
   return dispatch => {
-    axios.delete(`${ROOT_ROOT}/${id}`);
-    return {type: DELETE_HEADER, payload: id}
+    axios.delete(`${ROOT_URL}/${id}`).then(res => {
+      dispatch(removeHeader(id))
+    })
   }
 }
 
 const getHeaders = payload => {
-  return {type: FETCH_HEADERS, payload}
+  return {type: FETCH_HEADERS, payload};
 }
 
 const createHeader = payload => {
-  return {type: CREATE_HEADER, payload}
+  return {type: CREATE_HEADER, payload};
+}
+
+const removeHeader = payload => {
+  return {type: DELETE_HEADER, payload};
 }
