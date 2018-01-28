@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  # create the react/express docker container
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    environment:
+      - NODE_ENV=dev
+      - IP=0.0.0.0
+    links:
+      - db
+    ports:
+      - 3000:3000
+  
+  # create a database utility container for db management
+  mongo-express:
+    image: mongo-express
+    links:
+      - db:mongo
+    ports:
+      - 8081:8081
+
+  # create a mongo database container
+  db:
+    image: mongo
+    restart: always
+
+# creates a volume re-uses it everytime the application is brought up
+volumes:
+  node_modules:

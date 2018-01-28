@@ -12,13 +12,13 @@ mongoose.Promise = require('bluebird');
 
 const config = require('./config');
 const isDeveloping = process.env.NODE_ENV !== 'production';
-const ip = 'localhost';
+const ip = process.env.IP ? process.env.IP : 'localhost';
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 const app = express();
 
 // attempt to connect to mongodb otherwise throw an error
-mongoose.connect(config.database, {useMongoClient: true}, (err) => {
+mongoose.connect(config.mongo.uri, {useMongoClient: true}, (err) => {
   if (err) throw err;
 });
 
