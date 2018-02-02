@@ -1,7 +1,13 @@
-import { DELETE_HEADER, CREATE_HEADER, FETCH_HEADERS } from '../constants/ActionTypes'
+import { SELECT_HEADER, DELETE_HEADER, CREATE_HEADER, FETCH_HEADERS } from '../constants/ActionTypes'
 import axios from 'axios'
 
 const ROOT_URL = 'http://localhost:3000/api/headers'
+
+export const selectHeader = header => {
+  return dispatch => {
+    dispatch(selectedHeader(header))
+  }
+}
 
 export const fetchHeaders = () => {
   return dispatch => {
@@ -12,9 +18,9 @@ export const fetchHeaders = () => {
   }
 }
 
-export const addHeader = headerText => {
+export const addHeader = title => {
   return dispatch => {
-    axios.post(ROOT_URL, {text: headerText}).then(res => {
+    axios.post(ROOT_URL, {title}).then(res => {
       // dispatch triggers a state change
       dispatch(createHeader(res.data))
     })
@@ -30,14 +36,18 @@ export const deleteHeader = (id) => {
   }
 }
 
+const selectedHeader = payload => {
+  return {type: SELECT_HEADER, payload}
+}
+
 const getHeaders = payload => {
-  return {type: FETCH_HEADERS, payload};
+  return {type: FETCH_HEADERS, payload}
 }
 
 const createHeader = payload => {
-  return {type: CREATE_HEADER, payload};
+  return {type: CREATE_HEADER, payload}
 }
 
 const removeHeader = payload => {
-  return {type: DELETE_HEADER, payload};
+  return {type: DELETE_HEADER, payload}
 }

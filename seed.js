@@ -11,13 +11,21 @@ console.log('Seeding database...');
 Header.find({}).removeAsync()
   .then(() => {
     Header.create({
-      text: 'Header 1'
+      position: 1,
+      title: 'Header 1',
+      body: 'header 1 body'      
     }, {
-      text: 'Header 2'
+      position: 2,
+      title: 'Header 3',
+      body: 'header 3 body'
     }, {
-      text: 'Header 3'
+      position: 3,
+      title: 'Header 4',
+      body: 'header 4 body'
     }, {
-      text: 'Header 4'
+      position: 4,
+      title: 'Header 2',
+      body: 'header 2 body'
     })
   });
 

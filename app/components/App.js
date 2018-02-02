@@ -1,5 +1,5 @@
 // containers/App.js
-import classNames from 'classnames';
+import classNames from 'classnames'
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators, compose} from 'redux'
@@ -7,9 +7,11 @@ import _ from 'lodash'
 
 import {withTheme, withStyles} from 'material-ui/styles'
 import {AppBar, Button, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
-import DeleteIcon from 'material-ui-icons/Delete';
+import DeleteIcon from 'material-ui-icons/Delete'
 
-import {fetchHeaders, addHeader, deleteHeader} from '../actions'
+import {toggleHeaderEditMode, selectHeader, fetchHeaders, addHeader, deleteHeader} from '../actions'
+
+import Body from './Body'
 
 // Custom styling for permanent, responsive drawer
 const drawerWidth = 150;
@@ -41,85 +43,94 @@ const styles = theme => ({
     height: '100%',
     width: drawerWidth
   },
-  drawerHeader: theme.mixins.toolbar,
-  content: {
-    backgroundColor: theme.palette.background.default,
-    width: '100%',
-    padding: theme.spacing.unit * 3,
-    height: 'calc(100% - 56px)',
-    marginTop: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 'calc(100% - 64px)',
-      marginTop: 64
-    }
-  }
-});
-
+  drawerHeader: theme.mixins.toolbar
+})
 
 class App extends Component {
   state = {
     anchor: 'left',
-  };
+  }
 
   constructor(props){
     super(props)
   }
 
+  // load headers on page load
   componentWillMount() {
     this.props.fetchHeaders()
   }
 
-  addHeader = name => event => {
-    if(event.keyCode == 13){
+  toggleHeaderEditMode(){
+    this.props.toggleHeaderEditMode();
+  }
+
+  // submit a header to be added
+  addHeader = event => {
+    if(event.keyCode === 13){
       this.props.addHeader(event.target.value)
+      event.target.value = ''
     }
   }
 
-  deleteHeader =  id => {
-    this.props.deleteHeader(id);
+  selectHeader = header => {
+    this.props.selectHeader(header);
   }
 
+  deleteHeader = id => {
+    // deselect a header that is deleted
+    if(this.selectedHeader._id === id){
+     this.props.selectedHeader({}) ;
+    }
+    this.props.deleteHeader(id)
+  }
+
+  // generate a list of headers
   renderHeaders() {
-    const { classes } = this.props;
-    const navlinks = ['Home', ...this.props.headers];
-    return navlinks.map(header => {
-      return <li key={header._id}><a href={header.text}>{header.text}</a><DeleteIcon onClick={() => this.deleteHeader(header._id)}/></li>
+    const { headerEditMode, classes } = this.props
+    return this.props.headers.map(header => {
+      return <li key={header._id}>
+          <a onClick={() => this.selectHeader(header)}>{header.title}</a>
+          { headerEditMode ? <DeleteIcon onClick={() => this.deleteHeader(header._id)}/> : null }
+        </li>
     })
   }
 
   render() {
-    const { classes } = this.props;
-    const { anchor } = this.state;
+    const { classes } = this.props
+    const { anchor } = this.state
 
-    const drawerTitle = 'Knowledge Cellar';
+    const drawerTitle = 'Knowledge Cellar'
 
     const drawer = (
       <Drawer
         type="permanent"
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaper
         }}
         anchor={anchor}>
         <div/>
         <h4>Navigation Links</h4>
         <Divider />
+        <Button className={classes.button} onClick={this.toggleHeaderEditMode}>
+          Edit
+        </Button>
         <List>{this.renderHeaders()}</List>
         <TextField 
           id='headerTitle' 
           label='Add Header'
           className={classes.TextField}
           value={this.state.headerTitle}
-          onKeyDown={this.addHeader(this.keyPress,'headerTitle')}/>    
+          onKeyDown={this.addHeader}/>    
       </Drawer>
-    );
+    )
 
-    let before = null;
-    let after = null;
+    let before = null
+    let after = null
 
     if (anchor === 'left') {
-      before = drawer;
+      before = drawer
     } else {
-      after = drawer;
+      after = drawer
     }
 
    return (
@@ -133,9 +144,7 @@ class App extends Component {
           </Toolbar>
         </AppBar>
         {before}
-        <main className={classes.content}>
-          <Typography>{'Your body text here!'}</Typography>
-        </main>
+        <Body styles={styles}/>
         {after}
       </div>
     </div>
@@ -146,12 +155,16 @@ class App extends Component {
 // must add state for reducers here
 function mapStateToProps(state) {
   return {
-    headers: state.headers
+    toggleEditMode: state.toggle,
+    headers: state.headers,
+    selectedHeader: state.selectedHeader
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    toggleHeaderEditMode,
+    selectHeader,
     fetchHeaders,
     addHeader,
     deleteHeader    
@@ -162,4 +175,4 @@ export default compose(
   withTheme(), // middleware to supply theme
   withStyles(styles), // middleware to render with jss
   connect(mapStateToProps, mapDispatchToProps) // map props and actions
-)(App);
+)(App)

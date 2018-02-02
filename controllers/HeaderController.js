@@ -12,6 +12,7 @@ var Header = require('../model/Header');
 */
 router.get('/headers', function(req, res) {  
   Header.find({}, function(err, headers){
+    headers.sort((a, b) => a.position > b.position);
     if (err) return res.status(500).send('Error finding headers!');
     return res.status(200).json(headers);
   });
