@@ -6,16 +6,18 @@ import {bindActionCreators, compose} from 'redux'
 import _ from 'lodash'
 
 import {withTheme, withStyles} from 'material-ui/styles'
-import {AppBar, Button, Drawer, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
+import {AppBar, Button, Drawer, Switch, Toolbar, List, MenuItem, TextField, Typography, Divider, Icon, IconButton, MenuIcon, Hidden} from 'material-ui'
 import DeleteIcon from 'material-ui-icons/Delete'
+import EditIcon from 'material-ui-icons/Edit'
 
-import {toggleHeaderEditMode, selectHeader, fetchHeaders, addHeader, deleteHeader} from '../actions'
+import {selectHeader, fetchHeaders, addHeader, deleteHeader} from '../actions'
 
 import Body from './Body'
+import FormControlLabel from 'material-ui/Form/FormControlLabel';
 
 // Custom styling for permanent, responsive drawer
 const drawerWidth = 150;
-const styles = theme => ({
+const styles = theme => ({  
   root: {
     width: '100%',
     height: 430,
@@ -55,13 +57,13 @@ class App extends Component {
     super(props)
   }
 
+  handleToggle = name => (event, checked) => {
+    this.setState({ [name]: checked});
+  }
+
   // load headers on page load
   componentWillMount() {
     this.props.fetchHeaders()
-  }
-
-  toggleHeaderEditMode(){
-    this.props.toggleHeaderEditMode();
   }
 
   // submit a header to be added
@@ -86,11 +88,12 @@ class App extends Component {
 
   // generate a list of headers
   renderHeaders() {
-    const { headerEditMode, classes } = this.props
+    const { classes } = this.props
     return this.props.headers.map(header => {
       return <li key={header._id}>
           <a onClick={() => this.selectHeader(header)}>{header.title}</a>
-          { headerEditMode ? <DeleteIcon onClick={() => this.deleteHeader(header._id)}/> : null }
+          { this.state.headerEditMode ? <DeleteIcon style={{ width: 16, height: 16} } onClick={() => this.deleteHeader(header._id)}/> : null }
+          { this.state.headerEditMode ? <EditIcon style={{ width: 16, height: 16}}/> : null }
         </li>
     })
   }
@@ -111,16 +114,25 @@ class App extends Component {
         <div/>
         <h4>Navigation Links</h4>
         <Divider />
-        <Button className={classes.button} onClick={this.toggleHeaderEditMode}>
-          Edit
-        </Button>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={this.state.headerEditMode}
+              onChange={this.handleToggle('headerEditMode')}
+              aria-label="Edit Links"
+            />
+          }
+          label="Edit Links"
+          />
         <List>{this.renderHeaders()}</List>
+        { this.state.headerEditMode &&
         <TextField 
           id='headerTitle' 
           label='Add Header'
           className={classes.TextField}
           value={this.state.headerTitle}
-          onKeyDown={this.addHeader}/>    
+          onKeyDown={this.addHeader}/> 
+        }   
       </Drawer>
     )
 
@@ -155,15 +167,13 @@ class App extends Component {
 // must add state for reducers here
 function mapStateToProps(state) {
   return {
-    toggleEditMode: state.toggle,
     headers: state.headers,
     selectedHeader: state.selectedHeader
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    toggleHeaderEditMode,
+  return bindActionCreators({    
     selectHeader,
     fetchHeaders,
     addHeader,
