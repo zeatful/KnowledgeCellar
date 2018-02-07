@@ -14,6 +14,8 @@ export const fetchHeaders = () => {
     axios.get(ROOT_URL).then(res => {
       // dispatch triggers a state change
       dispatch(getHeaders(res.data))
+      // set the default selected header to first item
+      dispatch(updateSelectedHeader(res.data[0]))
     })
   }
 }
@@ -50,4 +52,8 @@ const createHeader = payload => {
 
 const removeHeader = payload => {
   return {type: DELETE_HEADER, payload}
+}
+
+const updateSelectedHeader = payload => {
+  return {type: SELECT_HEADER, payload}
 }

@@ -58,7 +58,12 @@ class App extends Component {
   }
 
   handleToggle = name => (event, checked) => {
-    this.setState({ [name]: checked});
+    this.setState({ [name]: checked})
+  }
+
+  headerEdit = key => {
+    this.setState({headerBeingEditted: key})
+    console.log(key);
   }
 
   // load headers on page load
@@ -75,26 +80,45 @@ class App extends Component {
   }
 
   selectHeader = header => {
-    this.props.selectHeader(header);
+    this.props.selectHeader(header)
   }
 
   deleteHeader = id => {
     // deselect a header that is deleted
-    if(this.selectedHeader._id === id){
-     this.props.selectedHeader({}) ;
-    }
-    this.props.deleteHeader(id)
+    if(this.props.selectedHeader._id === id){
+      this.props.selectHeader({})  
+    } 
+    this.props.deleteHeader(id)   
   }
 
   // generate a list of headers
   renderHeaders() {
     const { classes } = this.props
     return this.props.headers.map(header => {
-      return <li key={header._id}>
-          <a onClick={() => this.selectHeader(header)}>{header.title}</a>
-          { this.state.headerEditMode ? <DeleteIcon style={{ width: 16, height: 16} } onClick={() => this.deleteHeader(header._id)}/> : null }
-          { this.state.headerEditMode ? <EditIcon style={{ width: 16, height: 16}}/> : null }
+      let id = header._id;
+      let link = null;
+      
+      if(this.state.headerBeingEditted === id){
+        link = <TextField 
+        id='headerTitle' 
+        label='Add Header'
+        className={classes.TextField}
+        value={this.state.headerTitle}
+        onKeyDown={this.addHeader}/> 
+      } else {
+        link = <li key={id}>       
+          { this.state.headerEditMode ? 
+            <span>
+              <DeleteIcon style={{ width: 16, height: 16}} onClick={() => this.deleteHeader(id)}/>
+              <EditIcon style={{ width: 16, height: 16}} onClick={() => this.headerEdit
+                (id)}/>
+            </span> : null 
+          }
+          <a onClick={() => this.selectHeader(header)}> {header.title}</a>
         </li>
+      }
+
+      return link;
     })
   }
 
