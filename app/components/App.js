@@ -67,7 +67,7 @@ class App extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <NavlinkDrawer/>
+        <NavlinkDrawer anchor={anchor}/>
         <Body styles={styles}/>
       </div>
     </div>

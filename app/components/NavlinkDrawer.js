@@ -48,16 +48,17 @@ const styles = theme => ({
 
 class NavlinkDrawer extends Component {
   state = {};
+
   constructor(props){
     super(props)
   }
 
   handleToggle = name => (event, checked) => {
-    this.setState({ [name]: checked})
+    this.setState(...this.state, { [name]: checked})
   }
 
   headerEdit = key => {
-    this.setState({headerBeingEditted: key})
+    this.setState(...this.state, {headerBeingEditted: key})
     console.log(key);
   }
 
@@ -119,7 +120,7 @@ class NavlinkDrawer extends Component {
   render() {
     const { classes } = this.props
 
-    const headerBeingEditedValue = this.state.header.filter(h => {h.id === this.state.headerBeingEditted}).map(h => h.title);
+    const headerBeingEditedValue = this.props.headers.filter(h => {h.id === this.state.headerBeingEditted}).map(h => h.title);
 
     return (
       <Drawer
@@ -127,7 +128,7 @@ class NavlinkDrawer extends Component {
         classes={{
           paper: classes.drawerPaper
         }}
-        anchor={anchor}>
+        anchor={this.props.anchor}>
         <div/>
         <h4>Navigation Links</h4>
         <Divider />
