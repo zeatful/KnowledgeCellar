@@ -4,11 +4,13 @@
 1. Clone the repository:
   <pre>git clone https://github.com/zeatful/KnowledgeCellar.git</pre>
 
-2. Install node modules
-  <pre>npm install</pre>
+2. Download and install docker if not already installed
 
-3. Create a mongo docker image for your database
-  <pre>docker run --name some-mongo -d mongo</pre>
+https://www.docker.com/community-edition#/download
 
-4. Start the application
-  <pre>npm start</pre>
+3. Start up the application from the project directory using docker
+  <pre>docker-compose up</pre>
+
+4. Install Redux Developer Tools to view state in the browser
+  
+  https://github.com/zalmoxisus/redux-devtools-extension
