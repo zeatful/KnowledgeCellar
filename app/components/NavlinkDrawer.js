@@ -9,7 +9,7 @@ import {Button, Drawer, Switch, List, MenuItem, TextField, Divider, Icon, IconBu
 import DeleteIcon from 'material-ui-icons/Delete'
 import EditIcon from 'material-ui-icons/Edit'
 
-import {selectHeader, fetchHeaders, addHeader, deleteHeader} from '../actions'
+import {selectTopic, fetchTopics, addTopic, deleteTopic} from '../actions'
 
 import FormControlLabel from 'material-ui/Form/FormControlLabel';
 
@@ -53,64 +53,67 @@ class NavlinkDrawer extends Component {
     super(props)
   }
 
+  // handle toggle for editting topic titles
   handleToggle = name => (event, checked) => {
     this.setState(...this.state, { [name]: checked})
   }
 
-  headerEdit = key => {
-    this.setState(...this.state, {headerBeingEditted: key})
+  // edit an existing topic
+  topicEdit = key => {
+    this.setState(...this.state, {topicBeingEditted: key})
     console.log(key);
   }
 
-  // load headers on page load
+  // load topics on page load
   componentWillMount() {
-    this.props.fetchHeaders()
+    this.props.fetchTopics()
   }
 
-  // submit a header to be added
-  addHeader = event => {
+  // submit a topic to be added
+  addTopic = event => {
     if(event.keyCode === 13){
-      this.props.addHeader(event.target.value)
+      this.props.addTopic(event.target.value)
       event.target.value = ''
     }
   }
 
-  selectHeader = header => {
-    this.props.selectHeader(header)
+  selectTopic = topic => {
+    this.props.selectTopic(topic)
   }
 
-  deleteHeader = id => {
-    // deselect a header that is deleted
-    if(this.props.selectedHeader._id === id){
-      this.props.selectHeader({})  
+  deleteTopic = id => {
+    // deselect a topic that is deleted
+    if(this.props.selectedTopic._id === id){
+      this.props.selectTopic({})  
     } 
-    this.props.deleteHeader(id)   
+    this.props.deleteTopic(id)   
   }
 
-  // generate a list of headers
-  renderHeaders() {
+  // generate a list of topics
+  renderTopics() {
     const { classes } = this.props
-    return this.props.headers.map(header => {
-      let id = header._id;
+    return this.props.topics.map(topic => {
+      let id = topic._id;
       let link = null;
       
-      if(this.state.headerEditMode && this.state.headerBeingEditted === id){
+      if(this.state.topicEditMode && this.state.topicBeingEditted === id){
         link = <TextField
-        key={id+'header-title'} 
-        lable='Update Header Title'
-        id={id + 'current-header-title'}
+        key={id+'topic-title'} 
+        lable='Update Topic Title'
+        id={id + 'current-topic-title'}
         className={classes.TextField}
-        value={header.title}
-        onKeyDown={this.updateHeader}/> 
+        defaultValue={topic.title}
+        value={this.state.updatedTopicValue}
+        onKeyDown={this.updateTopic}/> 
       } else {
         link = <li key={id}>       
-          { this.state.headerEditMode ? 
+          { this.state.topicEditMode ? 
             <span>
-              <DeleteIcon key={id + '-delete'} style={{ width: 16, height: 16}} onClick={() => this.deleteHeader(id)}/>
-              <EditIcon key={id + '-edit'} style={{ width: 16, height: 16}} onClick={() => this.headerEdit(id)}/>
+              <DeleteIcon key={id + '-delete'} style={{ width: 16, height: 16}} onClick={() => this.deleteTopic(id)}/>
+              <EditIcon key={id + '-edit'} style={{ width: 16, height: 16}} onClick={() => this.topicEdit(id)}/>
             </span> : null 
           }
-          <a onClick={() => this.selectHeader(header)}> {header.title}</a>
+          <a onClick={() => this.selectTopic(topic)}> {topic.title}</a>
         </li>
       }
 
@@ -121,7 +124,7 @@ class NavlinkDrawer extends Component {
   render() {
     const { classes } = this.props
 
-    const headerBeingEditedValue = this.props.headers.filter(h => {h.id === this.state.headerBeingEditted}).map(h => h.title);
+    const topicBeingEditedValue = this.props.topics.filter(h => {h.id === this.state.topicBeingEditted}).map(h => h.title);
 
     return (
       <Drawer
@@ -136,21 +139,21 @@ class NavlinkDrawer extends Component {
         <FormControlLabel
           control={
             <Switch
-              checked={this.state.headerEditMode}
-              onChange={this.handleToggle('headerEditMode')}
+              checked={this.state.topicEditMode}
+              onChange={this.handleToggle('topicEditMode')}
               aria-label="Edit Links"
             />
           }
           label="Edit Links"
           />
-        <List>{this.renderHeaders()}</List>
-        { this.state.headerEditMode ?
+        <List>{this.renderTopics()}</List>
+        { this.state.topicEditMode ?
           <TextField 
-            id='headerBeingEdited' 
-            label='Add Header'
+            id='topicBeingEdited' 
+            label='Add Topic'
             className={classes.TextField}
-            value={this.state.headerBeingEditedValue}
-            onKeyDown={this.addHeader}/>
+            value={this.state.topicBeingEditedValue}
+            onKeyDown={this.addTopic}/>
           : null 
         }   
       </Drawer>
@@ -161,17 +164,17 @@ class NavlinkDrawer extends Component {
 // must add state for reducers here
 function mapStateToProps(state) {
   return {
-    headers: state.headers,
-    selectedHeader: state.selectedHeader
+    topics: state.topics,
+    selectedTopic: state.selectedTopic
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({    
-    selectHeader,
-    fetchHeaders,
-    addHeader,
-    deleteHeader    
+    selectTopic,
+    fetchTopics,
+    addTopic,
+    deleteTopic    
   }, dispatch)
 }
 

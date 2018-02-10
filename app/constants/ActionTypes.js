@@ -1,4 +1,4 @@
-export const SELECT_HEADER = 'SELECT_HEADER'
-export const FETCH_HEADERS = 'FETCH_HEADERS'
-export const CREATE_HEADER = 'CREATE_HEADER'
-export const DELETE_HEADER = 'DELETE_HEADER'
+export const SELECT_TOPIC = 'SELECT_TOPIC'
+export const FETCH_TOPICS = 'FETCH_TOPICS'
+export const CREATE_TOPIC = 'CREATE_TOPIC'
+export const DELETE_TOPIC = 'DELETE_TOPIC'

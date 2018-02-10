@@ -8,7 +8,6 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import {purple, green} from 'material-ui/colors';
 
-
 import App from './components/App';
 import reducers from './reducers/index';
 

@@ -1,13 +1,13 @@
 // reducers.js
 
 import { combineReducers } from 'redux'
-import HeaderReducer from './headerReducer'
-import SelectedHeaderReducer from './selectedHeaderReducer';
+import TopicReducer from './topicReducer'
+import SelectedTopicReducer from './selectedTopicReducer';
 
 // add all your reducers here
 const reducers = combineReducers({
-  selectedHeader: SelectedHeaderReducer,
-  headers: HeaderReducer
+  selectedTopic: SelectedTopicReducer,
+  topics: TopicReducer
 })
 
 export default reducers

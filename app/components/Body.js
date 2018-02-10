@@ -31,11 +31,11 @@ class Body extends Component {
 
   // render a page body, should make use of react-markdown
   render() {
-    const { selectedHeader, classes } = this.props
+    const { selectedTopic, classes } = this.props
 
     return (
       <main className={classes.content}>
-        <Typography>{selectedHeader.body}</Typography>
+        <Typography>{selectedTopic.body}</Typography>
       </main>
    )
   }
@@ -44,7 +44,7 @@ class Body extends Component {
 // must add state for reducers here
 function mapStateToProps(state) {
   return {
-    selectedHeader: state.selectedHeader
+    selectedTopic: state.selectedTopic
   }
 }
 
