@@ -13,7 +13,7 @@ import App from './components/App';
 import reducers from './reducers/index';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(reducers);
+const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // setup a theme to pass down to other components
 const theme = createMuiTheme({

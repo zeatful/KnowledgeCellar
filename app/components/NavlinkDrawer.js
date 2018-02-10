@@ -94,19 +94,20 @@ class NavlinkDrawer extends Component {
       let id = header._id;
       let link = null;
       
-      if(this.state.headerBeingEditted === id){
-        link = <TextField 
-        id='headerTitle' 
-        label='Add Header'
+      if(this.state.headerEditMode && this.state.headerBeingEditted === id){
+        link = <TextField
+        key={id+'header-title'} 
+        lable='Update Header Title'
+        id={id + 'current-header-title'}
         className={classes.TextField}
-        value={this.state.headerTitle}
-        onKeyDown={this.addHeader}/> 
+        value={header.title}
+        onKeyDown={this.updateHeader}/> 
       } else {
         link = <li key={id}>       
           { this.state.headerEditMode ? 
             <span>
-              <DeleteIcon style={{ width: 16, height: 16}} onClick={() => this.deleteHeader(id)}/>
-              <EditIcon style={{ width: 16, height: 16}} onClick={() => this.headerEdit(id)}/>
+              <DeleteIcon key={id + '-delete'} style={{ width: 16, height: 16}} onClick={() => this.deleteHeader(id)}/>
+              <EditIcon key={id + '-edit'} style={{ width: 16, height: 16}} onClick={() => this.headerEdit(id)}/>
             </span> : null 
           }
           <a onClick={() => this.selectHeader(header)}> {header.title}</a>
@@ -143,13 +144,14 @@ class NavlinkDrawer extends Component {
           label="Edit Links"
           />
         <List>{this.renderHeaders()}</List>
-        { this.state.headerEditMode &&
-        <TextField 
-          id='headerBeingEdited' 
-          label='Add Header'
-          className={classes.TextField}
-          value={this.state.headerBeingEditedValue}
-          onKeyDown={this.addHeader}/> 
+        { this.state.headerEditMode ?
+          <TextField 
+            id='headerBeingEdited' 
+            label='Add Header'
+            className={classes.TextField}
+            value={this.state.headerBeingEditedValue}
+            onKeyDown={this.addHeader}/>
+          : null 
         }   
       </Drawer>
     )
