@@ -31,8 +31,8 @@ if (config.seedDB) {
 }
 
 // START CONTROLLER DEFINITIONS
-var HeaderController = require('./controllers/HeaderController');
-app.use('/api', HeaderController);
+var TopicController = require('./controllers/TopicController');
+app.use('/api', TopicController);
 // END CONTROLLER DEFINITIONS
 
 // logic for rendering react from backend server with webpack middleware

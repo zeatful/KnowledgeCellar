@@ -55,6 +55,7 @@ class NavlinkDrawer extends Component {
 
   // handle toggle for editting topic titles
   handleToggle = name => (event, checked) => {
+    this.setState({topicBeingEditted: ''});
     this.setState(...this.state, { [name]: checked})
   }
 

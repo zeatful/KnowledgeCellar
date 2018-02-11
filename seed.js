@@ -4,28 +4,28 @@
  */
 
 'use strict';
-const Header = require('./model/Header');
+const Topic = require('./model/Topic');
 
 console.log('Seeding database...');
 
-Header.find({}).removeAsync()
+Topic.find({}).removeAsync()
   .then(() => {
-    Header.create({
+    Topic.create({
       position: 1,
-      title: 'Header 1',
-      body: 'header 1 body'      
+      title: 'Topic 1',
+      body: 'Topic 1 body'      
     }, {
       position: 2,
-      title: 'Header 3',
-      body: 'header 3 body'
+      title: 'Topic 3',
+      body: 'Topic 3 body'
     }, {
       position: 3,
-      title: 'Header 4',
-      body: 'header 4 body'
+      title: 'Topic 4',
+      body: 'Topic 4 body'
     }, {
       position: 4,
-      title: 'Header 2',
-      body: 'header 2 body'
+      title: 'Topic 2',
+      body: 'Topic 2 body'
     })
   });
 
