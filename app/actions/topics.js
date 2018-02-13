@@ -31,7 +31,6 @@ export const deleteTopic = id => {
 export const addTopic = topic => {
   return dispatch => {
     axios.post(ROOT_URL, topic).then(res => {
-      console.log('id: ', res.data._id)
       dispatch(createTopic(res.data))
     })
   }
@@ -40,7 +39,15 @@ export const addTopic = topic => {
 export const updateTopic = topic => {
   return dispatch => {
     axios.post(ROOT_URL, topic).then(res => {
-      dispatch(editTopic(res.data))
+      dispatch(editTopic(res.data, res.data.position))
+    })
+  }
+}
+
+export const updatePosition = topic => {
+  return dispatch => {
+    axios.post(ROOT_URL, topic).then(res => {
+      dispatch(moveTopic(res.data))
     })
   }
 }
@@ -57,8 +64,12 @@ const createTopic = payload => {
   return {type: CREATE_TOPIC, payload}
 }
 
-const editTopic = payload => {
-  return {type: UPDATE_TOPIC, payload}
+const editTopic = (payload, index) => {
+  return {type: UPDATE_TOPIC, payload, index}
+}
+
+const moveTopic = payload => {
+  return {type: MOVE_TOPIC, payload}
 }
 
 const removeTopic = payload => {

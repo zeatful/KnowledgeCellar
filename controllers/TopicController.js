@@ -1,11 +1,12 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-var router = express.Router();
+const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-var Topic = require('../model/Topic');
+const Topic = require('../model/Topic');
+const ObjectId = require('mongodb').ObjectID;
 
 /*
   Get topics
@@ -13,21 +14,31 @@ var Topic = require('../model/Topic');
 router.get('/topics', function(req, res) {  
   Topic.find({}, function(err, topics){
     topics.sort((a, b) => a.position > b.position);
-    if (err) return res.status(500).send('Error finding topics!');
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Error finding topics!');
+    }
     return res.status(200).json(topics);
   });
 });
-
 
 /*
   Create or Update topic
 */
 router.post('/topics', function(req, res) {
-  const options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  console.log('Attempting to post: ', req.body);
-  Topic.findOneAndUpdate({id: req.body.id}, req.body, options, function(err, topic) {
-    if(err) { return res.status(500).send('Error creating or updating topic!')};
-    return res.status(201).json(topic);
+  /* findOneAndUpdate does not create id if not passed to query since null 
+    is perfectly valid, so we need to use the ternary statement to create a new ID in
+    a case where no id is supplied
+  */
+  const query = req.body.id ? { _id: req.body.id } : {_id: new ObjectId()}
+  const options = { upsert: true, new: true, setDefaultsOnInsert: true }
+
+  Topic.findOneAndUpdate(query, req.body, options, function(err, topic) {
+    if(err) { 
+      console.log(err)
+      return res.status(500).send('Error creating or updating topic!')
+    }
+    return res.status(201).json(topic)
   });
 });
 

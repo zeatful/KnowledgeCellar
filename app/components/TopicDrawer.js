@@ -55,7 +55,7 @@ class TopicDrawer extends Component {
 
   // handle toggle for editting topic titles
   handleToggle = name => (event, checked) => {
-    this.setState({topicBeingEditted: ''});
+    this.setState(...this.state, {topicBeingEditted: ''})
     this.setState(...this.state, { [name]: checked})
   }
 
@@ -73,7 +73,7 @@ class TopicDrawer extends Component {
   addTopic = event => {
     // enter key is pressed
     if(event.keyCode === 13){
-      this.props.addTopic({title: event.target.value})
+      this.props.addTopic({title: event.target.value, position: this.props.topics.length})
       event.target.value = ''
     }
   }
@@ -84,8 +84,9 @@ class TopicDrawer extends Component {
     if(event.keyCode === 13){
       this.props.updateTopic({
         id: this.state.topicBeingEditted,
-        title: this.state.topicBeingEditedValue
+        title: event.target.value
       })
+      this.setState(...this.state, {topicBeingEditted: ''})
     }
   }
 
@@ -115,7 +116,7 @@ class TopicDrawer extends Component {
         id={id + 'current-topic-title'}
         className={classes.TextField}
         defaultValue={topic.title}
-        value={this.state.updatedTopicValue}
+        value={this.props.topicBeingEdittedValue}
         onKeyDown={this.updateTopic}/> 
       } else {
         return<li key={id}>       
@@ -161,10 +162,10 @@ class TopicDrawer extends Component {
         <List>{this.renderTopics()}</List>
         { this.state.topicEditMode ?
           <TextField 
-            id='topicBeingEdited' 
+            id='topicBeingAdded' 
             label='Add Topic'
             className={classes.TextField}
-            value={this.state.topicBeingEditedValue}
+            value={this.state.topicBeingAdded}
             onKeyDown={this.addTopic}/>
           : null 
         }   
