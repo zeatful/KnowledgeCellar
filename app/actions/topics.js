@@ -1,13 +1,7 @@
-import { SELECT_TOPIC, DELETE_TOPIC, CREATE_TOPIC, FETCH_TOPICS } from '../constants/ActionTypes'
+import { SELECT_TOPIC, DELETE_TOPIC, CREATE_TOPIC, UPDATE_TOPIC, FETCH_TOPICS } from '../constants/ActionTypes'
 import axios from 'axios'
 
-const ROOT_URL = 'http://localhost:3000/api/topics'
-
-export const selectTopic = topic => {
-  return dispatch => {
-    dispatch(selectedTopic(topic))
-  }
-}
+const ROOT_URL = '/api/topics'
 
 export const fetchTopics = () => {
   return dispatch => {
@@ -15,25 +9,38 @@ export const fetchTopics = () => {
       // dispatch triggers a state change
       dispatch(getTopics(res.data))
       // set the default selected topic to first item
-      dispatch(updateSelectedTopic(res.data[0]))
+      dispatch(selectedTopic(res.data[0]))
     })
   }
 }
 
-export const addTopic = title => {
+export const selectTopic = topic => {
   return dispatch => {
-    axios.post(ROOT_URL, {title}).then(res => {
-      // dispatch triggers a state change
+    dispatch(selectedTopic(topic))
+  }
+}
+
+export const deleteTopic = id => {
+  return dispatch => {
+    axios.delete(`${ROOT_URL}/${id}`).then(res => {
+      dispatch(removeTopic(id))
+    })
+  }
+}
+
+export const addTopic = topic => {
+  return dispatch => {
+    axios.post(ROOT_URL, topic).then(res => {
+      console.log('id: ', res.data._id)
       dispatch(createTopic(res.data))
     })
   }
 }
 
-export const deleteTopic = (id) => {
+export const updateTopic = topic => {
   return dispatch => {
-    axios.delete(`${ROOT_URL}/${id}`).then(res => {
-      // dispatch triggers a state change
-      dispatch(removeTopic(id))
+    axios.post(ROOT_URL, topic).then(res => {
+      dispatch(editTopic(res.data))
     })
   }
 }
@@ -50,10 +57,10 @@ const createTopic = payload => {
   return {type: CREATE_TOPIC, payload}
 }
 
-const removeTopic = payload => {
-  return {type: DELETE_TOPIC, payload}
+const editTopic = payload => {
+  return {type: UPDATE_TOPIC, payload}
 }
 
-const updateSelectedTopic = payload => {
-  return {type: SELECT_TOPIC, payload}
+const removeTopic = payload => {
+  return {type: DELETE_TOPIC, payload}
 }

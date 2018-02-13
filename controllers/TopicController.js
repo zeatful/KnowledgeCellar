@@ -18,13 +18,22 @@ router.get('/topics', function(req, res) {
   });
 });
 
+
+/*
+  Create or Update topic
+*/
 router.post('/topics', function(req, res) {
-  Topic.create(req.body, function(err, topic) {
+  const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  console.log('Attempting to post: ', req.body);
+  Topic.findOneAndUpdate({id: req.body.id}, req.body, options, function(err, topic) {
     if(err) { return handleError(res, err); }
     return res.status(201).json(topic);
   });
 });
 
+/* 
+  Delete topic
+*/
 router.delete('/topics/:id', function(req, res) {
   Topic.find({ _id: req.params.id}).removeAsync().then(() =>{
     return res.status(204).end();

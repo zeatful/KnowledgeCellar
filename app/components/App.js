@@ -8,7 +8,7 @@ import {withTheme, withStyles} from 'material-ui/styles'
 import {AppBar, Toolbar, Typography} from 'material-ui'
 
 import Body from './Body'
-import NavlinkDrawer from './NavlinkDrawer'
+import TopicDrawer from './TopicDrawer'
 
 // Custom styling for permanent, responsive drawer
 const drawerWidth = 150;
@@ -67,7 +67,7 @@ class App extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <NavlinkDrawer anchor={anchor}/>
+        <TopicDrawer anchor={anchor}/>
         <Body styles={styles}/>
       </div>
     </div>

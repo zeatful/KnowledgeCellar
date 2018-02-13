@@ -13,19 +13,19 @@ Topic.find({}).removeAsync()
     Topic.create({
       position: 1,
       title: 'Topic 1',
-      body: 'Topic 1 body'      
+      body: '# This the first topic header \n\nAnd this is a paragraph'      
     }, {
       position: 2,
       title: 'Topic 3',
-      body: 'Topic 3 body'
+      body: '# This is the third topic header\n\nAnd this is a paragraph'
     }, {
       position: 3,
       title: 'Topic 4',
-      body: 'Topic 4 body'
+      body: '# This is the fourth topic header\n\nAnd this is a paragraph'
     }, {
       position: 4,
       title: 'Topic 2',
-      body: 'Topic 2 body'
+      body: '# This is the second topic header\n\nAnd this is a paragraph'
     })
   });
 

@@ -9,7 +9,7 @@ import {Button, Drawer, Switch, List, MenuItem, TextField, Divider, Icon, IconBu
 import DeleteIcon from 'material-ui-icons/Delete'
 import EditIcon from 'material-ui-icons/Edit'
 
-import {selectTopic, fetchTopics, addTopic, deleteTopic} from '../actions'
+import {selectTopic, updateSelectedTopic, fetchTopics, updateTopic, addTopic, deleteTopic} from '../actions'
 
 import FormControlLabel from 'material-ui/Form/FormControlLabel';
 
@@ -46,7 +46,7 @@ const styles = theme => ({
   drawerHeader: theme.mixins.toolbar
 })
 
-class NavlinkDrawer extends Component {
+class TopicDrawer extends Component {
   state = {};
 
   constructor(props){
@@ -62,7 +62,6 @@ class NavlinkDrawer extends Component {
   // edit an existing topic
   topicEdit = key => {
     this.setState(...this.state, {topicBeingEditted: key})
-    console.log(key);
   }
 
   // load topics on page load
@@ -72,9 +71,21 @@ class NavlinkDrawer extends Component {
 
   // submit a topic to be added
   addTopic = event => {
+    // enter key is pressed
     if(event.keyCode === 13){
-      this.props.addTopic(event.target.value)
+      this.props.addTopic({title: event.target.value})
       event.target.value = ''
+    }
+  }
+
+  // update topic
+  updateTopic = event => {
+    // enter key is pressed
+    if(event.keyCode === 13){
+      this.props.updateTopic({
+        id: this.state.topicBeingEditted,
+        title: this.state.topicBeingEditedValue
+      })
     }
   }
 
@@ -98,7 +109,7 @@ class NavlinkDrawer extends Component {
       let link = null;
       
       if(this.state.topicEditMode && this.state.topicBeingEditted === id){
-        link = <TextField
+        return <TextField
         key={id+'topic-title'} 
         lable='Update Topic Title'
         id={id + 'current-topic-title'}
@@ -107,7 +118,7 @@ class NavlinkDrawer extends Component {
         value={this.state.updatedTopicValue}
         onKeyDown={this.updateTopic}/> 
       } else {
-        link = <li key={id}>       
+        return<li key={id}>       
           { this.state.topicEditMode ? 
             <span>
               <DeleteIcon key={id + '-delete'} style={{ width: 16, height: 16}} onClick={() => this.deleteTopic(id)}/>
@@ -117,15 +128,15 @@ class NavlinkDrawer extends Component {
           <a onClick={() => this.selectTopic(topic)}> {topic.title}</a>
         </li>
       }
-
-      return link;
     })
   }
 
   render() {
     const { classes } = this.props
 
-    const topicBeingEditedValue = this.props.topics.filter(h => {h.id === this.state.topicBeingEditted}).map(h => h.title);
+    const topicBeingEditedValue = this.props.topics
+      .filter(h => {h.id === this.state.topicBeingEditted})
+      .map(h => h.title);
 
     return (
       <Drawer
@@ -174,6 +185,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({    
     selectTopic,
     fetchTopics,
+    updateTopic,
     addTopic,
     deleteTopic    
   }, dispatch)
@@ -183,4 +195,4 @@ export default compose(
   withTheme(), // middleware to supply theme
   withStyles(styles), // middleware to render with jss
   connect(mapStateToProps, mapDispatchToProps) // map props and actions
-)(NavlinkDrawer)
+)(TopicDrawer)

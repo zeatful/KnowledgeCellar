@@ -1,4 +1,5 @@
-export const SELECT_TOPIC = 'SELECT_TOPIC'
 export const FETCH_TOPICS = 'FETCH_TOPICS'
+export const SELECT_TOPIC = 'SELECT_TOPIC'
+export const UPDATE_TOPIC = 'UPDATE_TOPIC'
 export const CREATE_TOPIC = 'CREATE_TOPIC'
 export const DELETE_TOPIC = 'DELETE_TOPIC'

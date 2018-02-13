@@ -5,6 +5,7 @@ import {compose} from 'redux'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
+import ReactMarkdown from 'react-markdown';
 import {Typography} from 'material-ui'
 
 import {withTheme, withStyles} from 'material-ui/styles'
@@ -35,7 +36,7 @@ class Body extends Component {
 
     return (
       <main className={classes.content}>
-        <Typography>{selectedTopic.body}</Typography>
+        <ReactMarkdown source={selectedTopic.body}/>
       </main>
    )
   }
