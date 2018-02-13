@@ -26,7 +26,7 @@ router.post('/topics', function(req, res) {
   const options = { upsert: true, new: true, setDefaultsOnInsert: true };
   console.log('Attempting to post: ', req.body);
   Topic.findOneAndUpdate({id: req.body.id}, req.body, options, function(err, topic) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send('Error creating or updating topic!')};
     return res.status(201).json(topic);
   });
 });
