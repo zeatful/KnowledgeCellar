@@ -10,23 +10,26 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = require('bluebird');
 
-const config = require('./config');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const ip = process.env.IP ? process.env.IP : 'localhost';
 const port = isDeveloping ? 3000 : process.env.PORT;
+const seedDB = isDeveloping ? true : process.env.seedDB;
+
+// Add openshift URI
+const mongoUri = isDeveloping ? "mongodb://localhost" : "mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${ip}:${port}/${process.env.MONGODB_DATABASE}";
 
 const app = express();
 
 // attempt to connect to mongodb otherwise throw an error
-mongoose.connect(config.mongo.uri, {useMongoClient: true}, (err) => {
+mongoose.connect(mongoUri, {useMongoClient: true}, (err) => {
   if (err) throw err;
 });
 
 // grab and set secret from config files
-//app.set('supersecret', config.secret);
+//app.set('supersecret', process.env.secret);
 
 // Populate database with sample data
-if (config.seedDB) {  
+if (seedDB) {  
   require('./seed');
 }
 
